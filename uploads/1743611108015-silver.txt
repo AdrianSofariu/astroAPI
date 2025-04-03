@@ -1,0 +1,7 @@
+silver:
+-offline support
+-endless scrolling
+
+gold:
+-websocket chart update
+-4k upload/download
