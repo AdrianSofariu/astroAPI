@@ -7,19 +7,23 @@ const typesRouter = require("./routes/types");
 const healthRouter = require("./routes/health");
 const filesRouter = require("./routes/files");
 const imagesRouter = require("./routes/images");
+const logRouter = require("./routes/log");
+const bulkRouter = require("./routes/addbulk");
+const authRouter = require("./routes/auth");
+const flaggedRouter = require("./routes/flagged");
 const { initializeSocket } = require("./websocket_generation/generator_utils");
 const path = require("path"); // Add this line
+const { auth } = require("./supabase");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 const server = http.createServer(app); // Create an HTTP server for Express and WebSockets
 
+app.use(cookieParser());
+
 // Configure CORS
 const allowedOrigins = [
-  process.env.FRONTEND_URL || "http://localhost:3000",
-  "http://localhost:3001",
-  ...(process.env.NODE_ENV === "development"
-    ? ["http://127.0.0.1:3000", "http://localhost:3000"]
-    : []),
+  process.env.FRONTEND_URL || "http://localhost:3000", 
 ];
 
 const corsOptions = {
@@ -54,7 +58,11 @@ app.use("/api/posts", postsRouter);
 app.use("/api/types", typesRouter);
 app.use("/api/health", healthRouter);
 app.use("/api/files", filesRouter);
+app.use("/api/log", logRouter);
 app.use("/api/images", imagesRouter); // Serve static files
+app.use("/api/addbulk", bulkRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/flagged", flaggedRouter);
 
 // Enhanced error handling
 app.use((err, req, res, next) => {
@@ -69,10 +77,12 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 3001; // Set API port
 
 // Start server and WebSocket
-server.listen(PORT, () => {
+server.listen(PORT, '0.0.0.0' , () => {
   console.log(`API server running on port ${PORT}`);
   console.log(`Allowed origins: ${allowedOrigins.join(", ")}`);
 });
 
 // Initialize WebSockets on the same server
 initializeSocket(server);
+// Start background monitoring thread
+require("./monitor");

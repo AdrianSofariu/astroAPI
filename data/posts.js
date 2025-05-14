@@ -6,7 +6,7 @@ export const posts = [
     subject: "Milky Way",
     source:
       "https://darksky.org/app/uploads/2021/07/DSC_8700-Pano-Edit-scaled.jpg",
-    date: new Date(2025, 2, 29),
+    date: new Date(2025, 2, 29).toISOString(),
   },
   {
     id: "2",
@@ -15,7 +15,7 @@ export const posts = [
     subject: "Milky Way",
     source:
       "https://darksky.org/app/uploads/2021/07/DSC_8700-Pano-Edit-scaled.jpg",
-    date: new Date(2025, 0, 1),
+    date: new Date(2025, 0, 1).toISOString(),
   },
   {
     id: "3",
@@ -24,7 +24,7 @@ export const posts = [
     subject: "Milky Way",
     source:
       "https://darksky.org/app/uploads/2021/07/DSC_8700-Pano-Edit-scaled.jpg",
-    date: new Date(2022, 9, 10),
+    date: new Date(2022, 9, 10).toISOString(),
   },
   {
     id: "4",
@@ -33,7 +33,7 @@ export const posts = [
     subject: "Milky Way",
     source:
       "https://darksky.org/app/uploads/2021/07/DSC_8700-Pano-Edit-scaled.jpg",
-    date: new Date(2025, 2, 21),
+    date: new Date(2025, 2, 21).toISOString(),
   },
   {
     id: "5",
@@ -42,7 +42,7 @@ export const posts = [
     subject: "Angel Nebula",
     source:
       "https://upload.wikimedia.org/wikipedia/commons/c/ca/Star-forming_region_S106_%28captured_by_the_Hubble_Space_Telescope%29.jpg",
-    date: new Date(2025, 0, 5),
+    date: new Date(2025, 0, 5).toISOString(),
   },
   {
     id: "6",
@@ -51,7 +51,7 @@ export const posts = [
     subject: "C/2023 A3 (Tsuchinshan-ATLAS)",
     source:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Comet_Tsuchinshan%E2%80%93ATLAS_over_Ohio_%28Composite%29.jpg/435px-Comet_Tsuchinshan%E2%80%93ATLAS_over_Ohio_%28Composite%29.jpg",
-    date: new Date(2025, 2, 19),
+    date: new Date(2025, 2, 19).toISOString(),
   },
   {
     id: "7",
@@ -60,7 +60,7 @@ export const posts = [
     subject: "Angel Nebula",
     source:
       "https://upload.wikimedia.org/wikipedia/commons/c/ca/Star-forming_region_S106_%28captured_by_the_Hubble_Space_Telescope%29.jpg",
-    date: new Date(2025, 0, 5),
+    date: new Date(2025, 0, 5).toISOString(),
   },
   {
     id: "8",
@@ -69,7 +69,7 @@ export const posts = [
     subject: "Angel Nebula",
     source:
       "https://upload.wikimedia.org/wikipedia/commons/c/ca/Star-forming_region_S106_%28captured_by_the_Hubble_Space_Telescope%29.jpg",
-    date: new Date(2025, 0, 5),
+    date: new Date(2025, 0, 5).toISOString(),
   },
   {
     id: "9",
@@ -78,7 +78,7 @@ export const posts = [
     subject: "Angel Nebula",
     source:
       "https://upload.wikimedia.org/wikipedia/commons/c/ca/Star-forming_region_S106_%28captured_by_the_Hubble_Space_Telescope%29.jpg",
-    date: new Date(2025, 0, 5),
+    date: new Date(2025, 0, 5).toISOString(),
   },
   {
     id: "10",
@@ -87,7 +87,7 @@ export const posts = [
     subject: "Angel Nebula",
     source:
       "https://upload.wikimedia.org/wikipedia/commons/c/ca/Star-forming_region_S106_%28captured_by_the_Hubble_Space_Telescope%29.jpg",
-    date: new Date(2025, 0, 5),
+    date: new Date(2025, 0, 5).toISOString(),
   },
   {
     id: "11",
@@ -96,7 +96,7 @@ export const posts = [
     subject: "Angel Nebula",
     source:
       "https://upload.wikimedia.org/wikipedia/commons/c/ca/Star-forming_region_S106_%28captured_by_the_Hubble_Space_Telescope%29.jpg",
-    date: new Date(2025, 0, 5),
+    date: new Date(2025, 0, 5).toISOString(),
   },
   {
     id: "12",
@@ -105,7 +105,7 @@ export const posts = [
     subject: "Angel Nebula",
     source:
       "https://upload.wikimedia.org/wikipedia/commons/c/ca/Star-forming_region_S106_%28captured_by_the_Hubble_Space_Telescope%29.jpg",
-    date: new Date(2025, 0, 5),
+    date: new Date(2025, 0, 5).toISOString(),
   },
   {
     id: "13",
@@ -114,7 +114,7 @@ export const posts = [
     subject: "Angel Nebula",
     source:
       "https://upload.wikimedia.org/wikipedia/commons/c/ca/Star-forming_region_S106_%28captured_by_the_Hubble_Space_Telescope%29.jpg",
-    date: new Date(2025, 0, 5),
+    date: new Date(2025, 0, 5).toISOString(),
   },
   {
     id: "14",
@@ -123,7 +123,7 @@ export const posts = [
     subject: "Angel Nebula",
     source:
       "https://upload.wikimedia.org/wikipedia/commons/c/ca/Star-forming_region_S106_%28captured_by_the_Hubble_Space_Telescope%29.jpg",
-    date: new Date(2025, 0, 5),
+    date: new Date(2025, 0, 5).toISOString(),
   },
   {
     id: "15",
@@ -132,7 +132,7 @@ export const posts = [
     subject: "Angel Nebula",
     source:
       "https://upload.wikimedia.org/wikipedia/commons/c/ca/Star-forming_region_S106_%28captured_by_the_Hubble_Space_Telescope%29.jpg",
-    date: new Date(2025, 0, 5),
+    date: new Date(2025, 0, 5).toISOString(),
   },
   {
     id: "16",
@@ -141,7 +141,7 @@ export const posts = [
     subject: "Angel Nebula",
     source:
       "https://upload.wikimedia.org/wikipedia/commons/c/ca/Star-forming_region_S106_%28captured_by_the_Hubble_Space_Telescope%29.jpg",
-    date: new Date(2025, 0, 5),
+    date: new Date(2025, 0, 5).toISOString(),
   },
   {
     id: "17",
@@ -150,7 +150,7 @@ export const posts = [
     subject: "Angel Nebula",
     source:
       "https://upload.wikimedia.org/wikipedia/commons/c/ca/Star-forming_region_S106_%28captured_by_the_Hubble_Space_Telescope%29.jpg",
-    date: new Date(2025, 0, 5),
+    date: new Date(2025, 0, 5).toISOString(),
   },
   {
     id: "18",
@@ -159,7 +159,7 @@ export const posts = [
     subject: "Angel Nebula",
     source:
       "https://upload.wikimedia.org/wikipedia/commons/c/ca/Star-forming_region_S106_%28captured_by_the_Hubble_Space_Telescope%29.jpg",
-    date: new Date(2025, 0, 5),
+    date: new Date(2025, 0, 5).toISOString(),
   },
   {
     id: "19",
@@ -168,7 +168,7 @@ export const posts = [
     subject: "Angel Nebula",
     source:
       "https://upload.wikimedia.org/wikipedia/commons/c/ca/Star-forming_region_S106_%28captured_by_the_Hubble_Space_Telescope%29.jpg",
-    date: new Date(2025, 0, 5),
+    date: new Date(2025, 0, 5).toISOString(),
   },
   {
     id: "20",
@@ -177,7 +177,7 @@ export const posts = [
     subject: "Angel Nebula",
     source:
       "https://upload.wikimedia.org/wikipedia/commons/c/ca/Star-forming_region_S106_%28captured_by_the_Hubble_Space_Telescope%29.jpg",
-    date: new Date(2025, 0, 5),
+    date: new Date(2025, 0, 5).toISOString(),
   },
   {
     id: "21",
@@ -186,7 +186,7 @@ export const posts = [
     subject: "Mars",
     source:
       "https://upload.wikimedia.org/wikipedia/commons/0/02/OSIRIS_Mars_true_color.jpg",
-    date: new Date(2025, 2, 24),
+    date: new Date(2025, 2, 24).toISOString(),
   },
   {
     id: "22",
@@ -195,7 +195,7 @@ export const posts = [
     subject: "Mars",
     source:
       "https://upload.wikimedia.org/wikipedia/commons/0/02/OSIRIS_Mars_true_color.jpg",
-    date: new Date(2025, 2, 25),
+    date: new Date(2025, 2, 25).toISOString(),
   },
   {
     id: "23",
@@ -204,7 +204,7 @@ export const posts = [
     subject: "Mars",
     source:
       "https://upload.wikimedia.org/wikipedia/commons/0/02/OSIRIS_Mars_true_color.jpg",
-    date: new Date(2025, 2, 24),
+    date: new Date(2025, 2, 24).toISOString(),
   },
   {
     id: "24",
@@ -213,7 +213,7 @@ export const posts = [
     subject: "Mars",
     source:
       "https://upload.wikimedia.org/wikipedia/commons/0/02/OSIRIS_Mars_true_color.jpg",
-    date: new Date(2025, 2, 24),
+    date: new Date(2025, 2, 24).toISOString(),
   },
   {
     id: "25",
@@ -222,7 +222,7 @@ export const posts = [
     subject: "Mars",
     source:
       "https://upload.wikimedia.org/wikipedia/commons/0/02/OSIRIS_Mars_true_color.jpg",
-    date: new Date(2025, 2, 24),
+    date: new Date(2025, 2, 24).toISOString(),
   },
   {
     id: "26",
@@ -231,7 +231,7 @@ export const posts = [
     subject: "Andromeda",
     source:
       "https://cdn.mos.cms.futurecdn.net/hCXYB5YKXzdq2WEHYEe36d-970-80.jpg",
-    date: new Date(2025, 2, 25),
+    date: new Date(2025, 2, 25).toISOString(),
   },
   {
     id: "27",
@@ -240,7 +240,7 @@ export const posts = [
     subject: "Andromeda",
     source:
       "https://cdn.mos.cms.futurecdn.net/hCXYB5YKXzdq2WEHYEe36d-970-80.jpg",
-    date: new Date(2025, 2, 25),
+    date: new Date(2025, 2, 25).toISOString(),
   },
   {
     id: "28",
@@ -249,7 +249,7 @@ export const posts = [
     subject: "Andromeda",
     source:
       "https://cdn.mos.cms.futurecdn.net/hCXYB5YKXzdq2WEHYEe36d-970-80.jpg",
-    date: new Date(2025, 2, 25),
+    date: new Date(2025, 2, 25).toISOString(),
   },
   {
     id: "29",
@@ -258,7 +258,7 @@ export const posts = [
     subject: "Andromeda",
     source:
       "https://cdn.mos.cms.futurecdn.net/hCXYB5YKXzdq2WEHYEe36d-970-80.jpg",
-    date: new Date(2025, 2, 25),
+    date: new Date(2025, 2, 25).toISOString(),
   },
   {
     id: "30",
@@ -267,7 +267,7 @@ export const posts = [
     subject: "Andromeda",
     source:
       "https://cdn.mos.cms.futurecdn.net/hCXYB5YKXzdq2WEHYEe36d-970-80.jpg",
-    date: new Date(2025, 2, 25),
+    date: new Date(2025, 2, 25).toISOString(),
   },
   {
     id: "31",
@@ -276,7 +276,7 @@ export const posts = [
     subject: "Andromeda",
     source:
       "https://cdn.mos.cms.futurecdn.net/hCXYB5YKXzdq2WEHYEe36d-970-80.jpg",
-    date: new Date(2025, 2, 25),
+    date: new Date(2025, 2, 25).toISOString(),
   },
   {
     id: "32",
@@ -285,7 +285,7 @@ export const posts = [
     subject: "Andromeda",
     source:
       "https://cdn.mos.cms.futurecdn.net/hCXYB5YKXzdq2WEHYEe36d-970-80.jpg",
-    date: new Date(2025, 2, 25),
+    date: new Date(2025, 2, 25).toISOString(),
   },
   {
     id: "33",
@@ -294,7 +294,7 @@ export const posts = [
     subject: "Andromeda",
     source:
       "https://cdn.mos.cms.futurecdn.net/hCXYB5YKXzdq2WEHYEe36d-970-80.jpg",
-    date: new Date(2025, 2, 25),
+    date: new Date(2025, 2, 25).toISOString(),
   },
   {
     id: "34",
@@ -303,7 +303,7 @@ export const posts = [
     subject: "Andromeda",
     source:
       "https://cdn.mos.cms.futurecdn.net/hCXYB5YKXzdq2WEHYEe36d-970-80.jpg",
-    date: new Date(2025, 2, 25),
+    date: new Date(2025, 2, 25).toISOString(),
   },
   {
     id: "35",
@@ -312,7 +312,7 @@ export const posts = [
     subject: "Andromeda",
     source:
       "https://cdn.mos.cms.futurecdn.net/hCXYB5YKXzdq2WEHYEe36d-970-80.jpg",
-    date: new Date(2025, 2, 25),
+    date: new Date(2025, 2, 25).toISOString(),
   },
   {
     id: "36",
@@ -321,7 +321,7 @@ export const posts = [
     subject: "Andromeda",
     source:
       "https://cdn.mos.cms.futurecdn.net/hCXYB5YKXzdq2WEHYEe36d-970-80.jpg",
-    date: new Date(2025, 2, 24),
+    date: new Date(2025, 2, 24).toISOString(),
   },
   {
     id: "37",
@@ -330,6 +330,6 @@ export const posts = [
     subject: "Andromeda",
     source:
       "https://cdn.mos.cms.futurecdn.net/hCXYB5YKXzdq2WEHYEe36d-970-80.jpg",
-    date: new Date(2025, 2, 24),
+    date: new Date(2025, 2, 24).toISOString(),
   },
 ];

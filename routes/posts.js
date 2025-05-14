@@ -5,10 +5,13 @@ const { types } = require("../data/types");
 const path = require("path");
 const url = require("url");
 const fs = require("fs");
-
+const supabase = require("../supabase");
+const authenticateUser = require("../authMiddleware");
 const postsMutex = require("../mutex"); // Import the shared mutex instance
 
-const generateId = () => `${Date.now()}`;
+//const generateId = () => `${Date.now()}`;
+const generateId = () => `${Date.now()}-${Math.floor(Math.random() * 1000000)}`;
+
 
 // Helper function for atomic operations with lock
 const atomicOperation = async (operation) => {
@@ -25,34 +28,36 @@ router.get("/", async (req, res) => {
   try {
     const { search, types: typesString, offset = "0", limit = "8" } = req.query;
 
-    const result = await atomicOperation(() => {
-      const typesArray = typesString ? typesString.split(",") : [];
-      let filteredPosts = [...posts];
+    const offsetNum = parseInt(offset, 10);
+    const limitNum = parseInt(limit, 10);
+    const typesArray = typesString ? typesString.split(",") : [];
 
-      if (search) {
-        filteredPosts = filteredPosts.filter((post) =>
-          post.title.toLowerCase().includes(search.toLowerCase())
-        );
-      }
+    let query = supabase
+      .from("Posts")
+      .select("*", { count: "exact" })
+      .order("date", { ascending: false })     // Primary sort: by date
+      .order("id", { ascending: false })       // Secondary sort: by ID
+      .range(offsetNum, offsetNum + limitNum - 1);
 
-      if (typesArray.length > 0) {
-        filteredPosts = filteredPosts.filter((post) =>
-          typesArray.includes(post.type)
-        );
-      }
+    // Chain filters only if values exist
+    if (search?.trim()) {
+      query = query.ilike("title", `%${search.trim()}%`);
+    }
 
-      const limitNumber = parseInt(limit, 10);
-      const offsetNumber = parseInt(offset, 10);
+    if (typesArray.length > 0) {
+      query = query.in("type", typesArray);
+    }
 
-      return {
-        posts: filteredPosts.slice(offsetNumber, offsetNumber + limitNumber),
-        total: filteredPosts.length,
-        offset: offsetNumber + limitNumber,
-        limit: limitNumber,
-      };
+    const { data, count, error } = await query;
+
+    if (error) throw error;
+
+    res.json({
+      posts: data,
+      total: count || 0,
+      offset: offsetNum + data.length,
+      limit: limitNum,
     });
-
-    res.json(result);
   } catch (error) {
     console.error("GET operation failed:", error);
     res.status(500).json({ message: "Internal server error" });
@@ -60,7 +65,7 @@ router.get("/", async (req, res) => {
 });
 
 // CREATE a new post
-router.post("/", async (req, res) => {
+router.post("/", authenticateUser, async (req, res) => {
   try {
     const postData = req.body;
 
@@ -91,13 +96,27 @@ router.post("/", async (req, res) => {
       type: postData.type,
       subject: postData.subject,
       source: postData.source,
-      date: new Date(),
+      date: new Date(postData.date).toISOString(),
+      user_id: req.user.id,
     };
 
-    await atomicOperation(() => {
+    /*await atomicOperation(() => {
       posts.unshift(newPost);
       return true;
-    });
+    });*/
+
+    const { data, error } = await supabase.from('Posts').insert([newPost]);
+
+    if (error) {
+      return res.status(500).json({ error: error.message });
+    }
+
+    await supabase.from("logs").insert([
+      {
+        user_id: req.user.id,
+        action: `ADD to posts`,
+      },
+    ]);
 
     res.status(201).json({
       message: "Post created successfully",
@@ -113,14 +132,16 @@ router.post("/", async (req, res) => {
 // GET all posts (no filters)
 router.get("/all", async (req, res) => {
   try {
-    const result = await atomicOperation(() => posts);
-    //return a json with a posts field
-    res.status(200).json({ posts: result });
+    const { data, error } = await supabase.from("Posts").select("*");
+    if (error) throw error;
+
+    res.status(200).json({ posts: data });
   } catch (error) {
     console.error("GET posts failed:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
 
 // GET a specific post by ID
 router.get("/:id", async (req, res) => {
@@ -128,12 +149,23 @@ router.get("/:id", async (req, res) => {
     const { id } = req.params;
     if (!id) return res.status(400).json({ message: "Post ID is required" });
 
-    const post = await atomicOperation(() =>
-      posts.find((post) => post.id === id)
-    );
-    if (!post) return res.status(404).json({ message: "Post not found" });
+    //const { data, error } = await supabase.from("Posts").select("*").eq("id", id).single();
+    const { data, error } = await supabase
+      .from("Posts")
+      .select("id, title, source, subject, type, date, user_id, profiles(username)")  // Get all columns from Posts and the username from Profiles
+      .eq("id", id)
+      .single();
 
-    res.json(post);
+    if (error) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    const flattenedData = {
+      ...data, // Spread all fields from the post
+      username: data.profiles?.username, // Move username out of the 'profiles' object
+    };
+    delete flattenedData.profiles;
+    res.json(flattenedData);
   } catch (error) {
     console.error("GET post failed:", error);
     res.status(500).json({ message: "Internal server error" });
@@ -141,7 +173,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // UPDATE a post by ID
-router.put("/:id", async (req, res) => {
+router.put("/:id", authenticateUser, async (req, res) => {
   try {
     const { id } = req.params;
     const postData = req.body;
@@ -154,30 +186,45 @@ router.put("/:id", async (req, res) => {
     ) {
       return res.status(400).json({ message: "All fields are required" });
     }
-    if (!types.includes(postData.type)) {
+
+    postData.user_id = req.user.id;
+    postData.date = new Date(postData.date).toISOString();
+
+    const { data: validTypes, error: typeErr } = await supabase
+      .from("Types")
+      .select("name");
+    if (typeErr) throw typeErr;
+
+    const typeList = validTypes.map((t) => t.name);
+    if (!typeList.includes(postData.type)) {
       return res.status(400).json({ message: "Invalid type" });
     }
+
     if (!/^[A-Za-z]/.test(postData.title)) {
-      return res
-        .status(400)
-        .json({ message: "Title must start with a letter" });
+      return res.status(400).json({ message: "Title must start with a letter" });
     }
 
-    const result = await atomicOperation(() => {
-      const index = posts.findIndex((p) => p.id === id);
-      if (index === -1) return { success: false };
+    const { data, error } = await supabase
+      .from("Posts")
+      .update(postData)
+      .eq("id", id)
+      .select()
+      .single();
 
-      posts[index] = { ...posts[index], ...postData };
-      return { success: true, post: posts[index] };
-    });
-
-    if (!result.success) {
+    if (error) {
       return res.status(404).json({ message: "Post not found" });
     }
 
+    await supabase.from("logs").insert([
+      {
+        user_id: req.user.id,
+        action: `UPDATE in posts`,
+      },
+    ]);
+
     res.json({
       message: "Post updated successfully",
-      post: result.post,
+      post: data,
     });
   } catch (error) {
     console.error("PUT operation failed:", error);
@@ -186,46 +233,46 @@ router.put("/:id", async (req, res) => {
 });
 
 // DELETE a post by ID
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", authenticateUser, async (req, res) => {
   try {
     const { id } = req.params;
-    if (!id) return res.status(400).json({ message: "Post ID is required" });
 
-    const result = await atomicOperation(() => {
-      const index = posts.findIndex((p) => p.id === id);
-      if (index === -1) return { success: false };
-      // Get the post to delete
-      const post = posts[index];
+    const { data: post, error: findError } = await supabase
+      .from("Posts")
+      .select("*")
+      .eq("id", id)
+      .single();
 
-      // Get the image path from the post (assuming `imageSrc` stores the file name)
-      console.log("Post to delete:", post);
-      const parsedUrl = url.parse(post.source); // Parse the URL to get the path
-      const imageFileName = path.basename(parsedUrl.pathname); // Extract file name from the URL path
-      const imageFilePath = path.join(__dirname, "images", imageFileName);
-      console.log("Image file path:", imageFilePath);
-
-      // Delete the image file if it exists
-      fs.exists(imageFilePath, (exists) => {
-        if (exists) {
-          fs.unlink(imageFilePath, (err) => {
-            if (err) {
-              return res
-                .status(500)
-                .json({ message: "Failed to delete image file" });
-            }
-
-            console.log(`Image ${post.imageSrc} deleted successfully.`);
-          });
-        }
-      });
-
-      posts.splice(index, 1);
-      return { success: true };
-    });
-
-    if (!result.success) {
+    if (findError) {
       return res.status(404).json({ message: "Post not found" });
     }
+
+    // Attempt to delete associated image if local
+    const parsedUrl = url.parse(post.source);
+    const imageFileName = path.basename(parsedUrl.pathname);
+    const imageFilePath = path.join(__dirname, "images", imageFileName);
+
+    fs.exists(imageFilePath, (exists) => {
+      if (exists) {
+        fs.unlink(imageFilePath, (err) => {
+          if (err) {
+            console.error("Failed to delete image:", err);
+          } else {
+            console.log(`Image ${imageFileName} deleted successfully.`);
+          }
+        });
+      }
+    });
+
+    const { error } = await supabase.from("Posts").delete().eq("id", id);
+    if (error) throw error;
+
+    await supabase.from("logs").insert([
+      {
+        user_id: req.user.id,
+        action: `DELETE from posts`,
+      },
+    ]);
 
     res.json({ message: "Post deleted successfully" });
   } catch (error) {
@@ -233,5 +280,6 @@ router.delete("/:id", async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
 
 module.exports = router;

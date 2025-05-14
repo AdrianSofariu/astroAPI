@@ -1,4 +1,5 @@
 const express = require("express");
+
 const router = express.Router();
 
 // Shared lock to ensure consistent status checks
@@ -17,5 +18,6 @@ router.get("/", async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
 
 module.exports = router;

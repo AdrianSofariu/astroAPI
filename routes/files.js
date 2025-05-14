@@ -42,15 +42,23 @@ router.post("/upload", upload.single("file"), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ message: "No file uploaded" });
   }
+
+  const host = req.get("host");
+  const protocol = req.protocol;
+  const fileUrl = `${protocol}://${host}/uploads/${req.file.filename}`;
+
   res.status(200).json({
     message: "File uploaded successfully",
-    filePath: `/api/files/download/${req.file.filename}`,
+    filePath: fileUrl,
   });
 });
 
 // File download endpoint
 router.get("/download/:filename", (req, res) => {
-  const filePath = path.join(uploadDir, req.params.filename);
+  const fileName = path.basename(req.params.filename); // strips any path tricks
+  const filePath = path.join(uploadDir, fileName);
+
+  // const filePath = path.join(uploadDir, req.params.filename);
   if (fs.existsSync(filePath)) {
     res.download(filePath);
   } else {

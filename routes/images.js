@@ -37,7 +37,8 @@ router.post("/", upload.single("image"), (req, res) => {
   }
 
   // Construct the URL for the uploaded file
-  const fileUrl = `http://localhost:3001/images/${req.file.filename}`;
+  const fileUrl = `${req.protocol}://${req.get("host")}/images/${req.file.filename}`;
+
 
   res.status(200).json({
     message: "File uploaded successfully",
@@ -46,6 +47,6 @@ router.post("/", upload.single("image"), (req, res) => {
 });
 
 // Serve static files from the 'uploads' folder
-router.use("/images", express.static("uploads"));
+router.use("/images", express.static("images"));
 
 module.exports = router;
