@@ -1,4 +1,4 @@
-export const posts = [
+const posts = [
   {
     id: "1",
     title: "Image 1",
@@ -333,3 +333,5 @@ export const posts = [
     date: new Date(2025, 2, 24).toISOString(),
   },
 ];
+
+module.exports = { posts };

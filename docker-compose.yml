@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  express-api:
+    image: my-express-api # The name of your Docker image
+    build:
+      context: . # Path to the directory containing the Dockerfile
+    ports:
+      - "3001:3001" # Expose the port for the Express app
+    env_file:
+      - .env # Load environment variables from the .env file

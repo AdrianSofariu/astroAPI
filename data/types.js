@@ -1,4 +1,4 @@
-export const types = [
+const types = [
   "galaxy",
   "nebula",
   "planet",
@@ -7,3 +7,7 @@ export const types = [
   "planetoid",
   "constellation",
 ];
+
+module.exports = {
+  types,
+};
