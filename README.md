@@ -38,7 +38,7 @@ AstroAPI is a backend service built with Node.js, Express, and Supabase. It prov
 - **Backend:** Node.js, Express.js
 - **Database:** Supabase (PostgreSQL)
 - **Authentication:** JWT (JSON Web Tokens)
-- **File Storage:** Supabase Storage (for images), Local file system (for general files)
+- **File Storage:** Supabase Storage (for images)
 - **Other Libraries:**
   - `@supabase/supabase-js`: Supabase client library.
   - `jsonwebtoken`: For generating and verifying JWTs.
