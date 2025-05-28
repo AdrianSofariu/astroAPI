@@ -47,7 +47,6 @@ AstroAPI is a backend service built with Node.js, Express, and Supabase. It prov
   - `body-parser`: For parsing request bodies.
   - `cookie-parser`: For parsing cookies.
   - `dotenv`: For managing environment variables.
-  - `async-mutex`: For handling asynchronous locks (used in `posts.js` and `types.js`).
 
 ## Prerequisites
 
